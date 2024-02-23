@@ -1,0 +1,10 @@
+GRID
+nr 1
+nth 10
+nphi 10
+itemp 1
+etemp 1
+idens 1
+edens 1
+maxR 0.2
+END

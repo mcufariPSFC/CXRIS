@@ -1,0 +1,6 @@
+CAMERA
+cameraR 10
+cameraTHETA 0
+cameraPHI 0
+CID 1
+END

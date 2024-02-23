@@ -1,0 +1,11 @@
+APERATURE 1
+geo Circle
+nx 1
+ny 1
+radius 1
+xoffset 0
+yoffset 0
+zoffset 15
+END
+
+
