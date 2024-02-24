@@ -3,4 +3,4 @@ SRC = include/aperatureGrid.cpp include/aperatureList.cpp include/imagePlate.cpp
 
 
 default:
-	g++ $(HEADERS) $(SRC) src/main.cc -Wall
+	g++-13 -O2 $(HEADERS) $(SRC) src/main.cc 
