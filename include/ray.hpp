@@ -2,7 +2,7 @@
 #define RAY_H
 #include <vector>
 #include "grid.hpp"
-
+#include <cmath>
 class Ray{
 public:
     Ray();
