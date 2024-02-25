@@ -20,7 +20,7 @@ public:
 
     Camera(); //Constructor class that reads in the camera_input file
     void outputFirstIPCoords();
-    void beginRayTrace(Grid g);
+    void beginRayTrace(Grid* g);
     void outRayTrace();
 private:
     AperatureList cameraAperatureList;
