@@ -173,6 +173,12 @@ void ImagePlate::printCoordList(){
     }
 }
 
+void ImagePlate::dump_tree(){
+    for(Pixel* pixel: IPPixelTree){
+        pixel->print_pixel();
+    }
+}
+
 std::pair<double,double> ImagePlate::get_coords(int i, int j){
     return IPPixelCoords[i*ny + j];
 }

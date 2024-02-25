@@ -52,8 +52,8 @@ level(leveli)
     PSL = 0;
     traced = 0;
 }
-std::vector<std::pair<Pixel*,std::pair<double, double > > > Pixel::refinePassive(){
-    std::vector<std::pair<Pixel*, std::pair<double, double > > > newPixelsAndCoords;
+std::vector<Pixel*> Pixel::refinePassive(){
+    std::vector<Pixel*> newPixelsAndCoords;
 
     if(level==maxLevel || refined){
         return newPixelsAndCoords;
@@ -64,10 +64,10 @@ std::vector<std::pair<Pixel*,std::pair<double, double > > > Pixel::refinePassive
     childBottomRight = new Pixel(coords.first + childOffsetX, coords.second - childOffsetY, level+1, childOffsetX/4.0, childOffsetY/4.0, maxLevel);
     childBottomLeft = new Pixel(coords.first - childOffsetX, coords.second - childOffsetY, level+ 1, childOffsetX/4.0, childOffsetY/4.0, maxLevel);
 
-    newPixelsAndCoords.push_back(std::make_pair(childBottomLeft, childBottomLeft->get_coords()));
-    newPixelsAndCoords.push_back(std::make_pair(childTopLeft, childTopLeft->get_coords()));
-    newPixelsAndCoords.push_back(std::make_pair(childTopRight, childTopRight->get_coords()));
-    newPixelsAndCoords.push_back(std::make_pair(childBottomRight,childBottomRight->get_coords()));
+    newPixelsAndCoords.push_back(childBottomLeft);
+    newPixelsAndCoords.push_back(childTopLeft);
+    newPixelsAndCoords.push_back(childTopRight);
+    newPixelsAndCoords.push_back(childBottomRight);
     return newPixelsAndCoords;
 }
 void Pixel::setMyChildrensNeighbors(){
@@ -112,7 +112,7 @@ void Pixel::setMyChildrensNeighbors(){
     }  
 
     if(neighborTopRight){
-        childTopRight->set_neighborTopRight(neighborTopLeft->get_childBottomLeft());
+        childTopRight->set_neighborTopRight(neighborTopRight->get_childBottomLeft());
     }
 
     if(neighborRight){
@@ -140,8 +140,8 @@ void Pixel::setMyChildrensNeighbors(){
     }
 
 }
-std::vector<std::pair<Pixel*, std::pair<double, double > > > Pixel::refineActive(){
-    std::vector<std::pair<Pixel*, std::pair<double, double > > > newPixelsAndCoords;
+std::vector<Pixel*> Pixel::refineActive(){
+    std::vector<Pixel*> newPixelsAndCoords;
     if (level == maxLevel || refined){
         return newPixelsAndCoords;
     }
@@ -215,10 +215,11 @@ std::vector<std::pair<Pixel*, std::pair<double, double > > > Pixel::refineActive
     if(neighborLeft){
         neighborLeft->setMyChildrensNeighbors();
     }
-    newPixelsAndCoords.push_back(std::make_pair(childBottomLeft, childBottomLeft->get_coords()));
-    newPixelsAndCoords.push_back(std::make_pair(childTopLeft, childTopLeft->get_coords()));
-    newPixelsAndCoords.push_back(std::make_pair(childTopRight, childTopRight->get_coords()));
-    newPixelsAndCoords.push_back(std::make_pair(childBottomRight,childBottomRight->get_coords()));
+
+    newPixelsAndCoords.push_back(childBottomLeft);
+    newPixelsAndCoords.push_back(childTopLeft);
+    newPixelsAndCoords.push_back(childTopRight);
+    newPixelsAndCoords.push_back(childBottomRight);
 
     return newPixelsAndCoords;
 
@@ -237,7 +238,16 @@ std::vector<std::pair<Pixel*, std::pair<double,double> > > Pixel::traverse_coord
 }
 
 
-
+void Pixel::print_pixel(){
+    if(!refined){
+        std::cout << coords.first << " " << coords.second << " " << PSL <<std::endl;
+    } else {
+        childTopLeft->print_pixel();
+        childTopRight->print_pixel();
+        childBottomRight->print_pixel();
+        childBottomLeft->print_pixel();
+    }
+}
 
 void Pixel::add_PSL(double pslIncr){
     PSL += pslIncr;

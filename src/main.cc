@@ -6,5 +6,6 @@ int main(){
     std::cout << "begin trace " << std::endl;
     cam.beginRayTrace(g);
     std::cout << "End trace" << std::endl;
+    cam.outRayTrace();
     return 0;
 }

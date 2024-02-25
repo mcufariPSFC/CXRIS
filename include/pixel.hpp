@@ -20,8 +20,8 @@ public:
 
     Pixel();
     Pixel(double xLoc, double yLoc, int level, double offsetX, double offsetY, int maxLevel);
-    std::vector<std::pair<Pixel*, std::pair<double,double> > > refineActive(); //used when hit
-    std::vector<std::pair<Pixel*, std::pair<double, double > > > refinePassive(); //used when told by neighbor to refine
+    std::vector<Pixel*> refineActive(); //used when hit
+    std::vector<Pixel*>refinePassive(); //used when told by neighbor to refine
     void setMyChildrensNeighbors();
 
     void add_PSL(double PSL);
@@ -46,6 +46,8 @@ public:
 
     std::vector<std::pair<Pixel*, std::pair<double,double> > > traverse_coords();
 
+
+    void print_pixel();
 private:
     Pixel* childTopLeft;
     Pixel* childTopRight;

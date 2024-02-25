@@ -25,6 +25,8 @@ public:
     double get_PSL(int i, int j);
     std::vector<Pixel*> get_tree();
 
+    void dump_tree();
+
 private:
     double beginE; //Beginning of IP energy sensitivity keV
     double endE; // End of IP energy sensitivity (- range/nE technically) keV
