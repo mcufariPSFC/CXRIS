@@ -10,13 +10,13 @@ Grid::Grid(){
     string testString;
 
     nr = 0;
-    ntheta = 0;
-    nphi = 0;
+    ntheta = 1;
+    nphi = 1;
     double fixedEdens = 0;
     double fixedIdens = 0;
     double fixedEtemp = 0;
     double fixedItemp = 0;
-
+    int refineParam = 1;
     while (grid_in >> testString){
 
        if (testString == "GRID"){
@@ -55,7 +55,9 @@ Grid::Grid(){
                     grid_in >> fixedEtemp;
                 }
                 
-            
+                if(testString == "refinement"){
+                    grid_in >> refineParam;
+                }
             
             }
 
@@ -71,11 +73,11 @@ Grid::Grid(){
         electronDensity = tmpED;
 
         for (int i = 0; i < nr; i++){
-             BoundingShellCollection* newShell = new BoundingShellCollection(maxRadiusCm / nr * i,maxRadiusCm/nr * (i+1),4);
+             BoundingShellCollection* newShell = new BoundingShellCollection(maxRadiusCm / nr * i,maxRadiusCm/nr * (i+1),refineParam);
              boundingSphere.push_back(newShell);
         }
        
-        printCoordsOfCells(4);
+        printCoordsOfCells(refineParam);
 
     }
 }
