@@ -10,11 +10,11 @@ public:
 
     void updateRaySpec(int nE);
     
-    void launchRay(Grid G, double beginE, double endE, int nE); //compute energy spectrum along ray given the grid G
+    std::pair<double*, int> launchRay(Grid* G, double beginE, double endE, int nE); //compute energy spectrum along ray given the grid G
 
     double get_spectrum();
 
-
+    
 private:
     std::vector<double> energySpectrum;
     double unitDirection[3];

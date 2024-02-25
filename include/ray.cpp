@@ -57,18 +57,21 @@ void Ray::updateRaySpec(int nE){
     energySpectrum = temp;
 }
 
-void Ray::launchRay(Grid g, double beginE, double endE, int nE){
+std::pair<double*, int> Ray::launchRay(Grid* g, double beginE, double endE, int nE){
     double udoto = dot(unitDirection,coordinateOfLaunch);
     double udoto2 = udoto*udoto;
     double usq = dot(unitDirection,unitDirection);
     double osq = dot(coordinateOfLaunch, coordinateOfLaunch);
-    double disc = udoto2 - usq * (osq - g.get_maxRadius()*g.get_maxRadius());
+    double disc = udoto2 - usq * (osq - g->get_maxRadius()*g->get_maxRadius());
+    double coordIntersect[3] = {0.0,0.0,0.0};
     if(disc < 0){
-        return;
+        
+        return std::make_pair(coordIntersect,0);
     }
     else{
-        energySpectrum[0] = 1;
+        return std::make_pair(coordIntersect,1);
     }
+    
 }
 
 double Ray::get_spectrum(){
