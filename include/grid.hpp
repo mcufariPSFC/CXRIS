@@ -1,7 +1,7 @@
 #ifndef GRID_H
 #define GRID_H
 #include <vector>
-
+#include "boundingShellCollection.hpp"
 /* The grid class contains a the hydrodynamic information for the post-processed image */
 /* The grid is spherical, must be cut into wedges at r=0 such that no r=0 exclusion zone exists */
 /* The grid enables the tracing of rays from the source (the image plate plane) through to the end of the grid*/
@@ -15,6 +15,7 @@ public:
     
     Grid();
     
+    void printCoordsOfCells(int level);
     
     /*std::vector<double> plasmaThermalBremm(int nr, int ntheta, int nphi);
     
@@ -23,6 +24,7 @@ public:
     int get_nphi() ;*/
 
     double get_maxRadius();
+
 private:
     int nr;
     int ntheta;
@@ -31,6 +33,8 @@ private:
     std::vector<double> ionTemp;    //value of ion temp in a given cell
     std::vector<double> ionDensity; //value of ion density in a given cell
     std::vector<double> electronDensity; //value of electron density in a given cell
+    
+    std::vector<BoundingShellCollection*> boundingSphere;
 
     double maxRadiusCm; //maximum radius of grid
     
