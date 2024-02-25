@@ -105,9 +105,9 @@ void Camera::beginRayTrace(Grid* hydroGrid){
                         xray.updateRaySpec(nE);
                         std::pair<double*, int> initTrackCond = xray.launchRay(hydroGrid, beginE, endE, nE);
                         if(initTrackCond.second && !activePixel->get_maxRefined()){
-                            std::cout << "refining" << std::endl;
+                            
                             auto newpixelptrs = activePixel->refineActive();
-                            std::cout << "finished refine" << std::endl; 
+                            
                             continueTracking = 0;
                             tree.insert(tree.end(), newpixelptrs.begin(),newpixelptrs.end());
                             break;  
