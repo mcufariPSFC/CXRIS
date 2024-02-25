@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
+#include <cmath>
 using namespace std;
 Grid::Grid(){
     ifstream grid_in("/Users/matt/Library/Mobile Documents/com~apple~CloudDocs/Documents/research/CXRIS/inputs/grid_input.txt");
@@ -70,9 +70,22 @@ Grid::Grid(){
         std::vector<double> tmpED(nr*ntheta*nphi, fixedEdens);
         electronDensity = tmpED;
 
+        for (int i = 0; i < nr; i++){
+             BoundingShellCollection* newShell = new BoundingShellCollection(maxRadiusCm / nr * i,maxRadiusCm/nr * (i+1),4);
+             boundingSphere.push_back(newShell);
+        }
+       
+        printCoordsOfCells(4);
+
     }
 }
 
 double Grid::get_maxRadius(){
     return maxRadiusCm;
+}
+
+void Grid::printCoordsOfCells(int levelDes){
+    for(BoundingShellCollection* bs: boundingSphere){
+        bs->print_memberCoords(levelDes);
+    }
 }
