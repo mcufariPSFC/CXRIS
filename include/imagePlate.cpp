@@ -6,7 +6,7 @@
 
 using namespace std;
 
-ImagePlate::ImagePlate(int nxi, int nyi, int IPIDi, double beginEi, double endEi, int nEi, double extXi, double extYi, double standOffi):
+ImagePlate::ImagePlate(int nxi, int nyi, int IPIDi, double beginEi, double endEi, int nEi, double extXi, double extYi, double standOffi, int refinei):
 beginE(beginEi),
 endE(endEi),
 standOff(standOffi),
@@ -15,7 +15,8 @@ nx(nxi),
 ny(nyi),
 extX(extXi),
 extY(extYi),
-IPID(IPIDi)
+IPID(IPIDi),
+refine(refinei)
 {
     std::vector<double> temp(nx * ny,0.0);
     PSL = temp;
@@ -23,9 +24,78 @@ IPID(IPIDi)
     double binWidthY = extY/(double) ny;
     for(int i = 0; i < nx; i++){
         for(int j = 0; j < ny; j++){
+            Pixel* newPix = new Pixel(-extX/2.0 + binWidthX * (double) i + binWidthX/2.0,-extY/2.0+binWidthY * (double) j + binWidthY/2.0, 0, binWidthX/4.0, binWidthY/4.0, refine);
+            IPPixelTree.push_back(newPix);
             IPPixelCoords.push_back(std::pair<double,double>(-extX/2.0 + binWidthX * (double) i + binWidthX/2.0,-extY/2.0+binWidthY * (double) j + binWidthY/2.0));
         }
-    }     
+    }  
+    for(int i = 0; i < nx; i++){
+        for(int j = 0; j < ny; j++){
+            if(i == 0){
+                if(j == 0){
+                    IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny * (i + 1) + j]);
+                    IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
+                    IPPixelTree[ny * i + j]->set_neighborBottomRight(IPPixelTree[ny * (i + 1) + j +1]);
+                }
+                if(j == ny - 1){
+                    IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny*i + j - 1]);
+                    IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[2 * ny - 1]);
+                    IPPixelTree[ny * i + j]->set_neighborBottomLeft(IPPixelTree[2*ny - 2]);
+                }
+                else{
+                    IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny*(i+1)+j]);
+                    IPPixelTree[ny * i + j]->set_neighborBottomLeft(IPPixelTree[ny*(i+1)+j-1]);
+                    IPPixelTree[ny * i + j]->set_neighborBottomRight(IPPixelTree[ny * (i+1)+j+1]);
+                    IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny*i + j -1]);
+                    IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny *i +j + 1]);
+                }
+            } else if(i == nx-1){
+                if(j == 0){
+                    IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i-1)+j]);
+                    IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
+                    IPPixelTree[ny * i + j]->set_neighborTopRight(IPPixelTree[ny * (i-1) + j+1]);
+                }
+                if(j == ny - 1){
+                    IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
+                    IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny * i + j - 1]);
+                    IPPixelTree[ny * i + j]->set_neighborTopLeft(IPPixelTree[ny * (i-1)+j-1]);
+                }
+                else{
+                    IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
+                    IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny * i + j - 1]);
+                    IPPixelTree[ny * i + j]->set_neighborTopLeft(IPPixelTree[ny * (i-1)+j-1]);
+                    IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
+                    IPPixelTree[ny * i + j]->set_neighborTopRight(IPPixelTree[ny * (i-1) + j+1]);
+                }
+            } 
+            if(j == 0 && (i != 0 && i!= nx-1)){
+                IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
+                IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
+                IPPixelTree[ny * i + j]->set_neighborTopRight(IPPixelTree[ny * (i-1) + j+1]);
+                IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny*(i+1)+j]);
+                IPPixelTree[ny * i + j]->set_neighborBottomRight(IPPixelTree[ny * (i+1)+j+1]);
+            }
+            if(j == ny - 1 && (i != 0 && i != nx - 1)){
+                IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
+                IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny * i + j - 1]);
+                IPPixelTree[ny * i + j]->set_neighborTopLeft(IPPixelTree[ny * (i-1)+j-1]);
+                IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny*(i+1)+j]);
+                IPPixelTree[ny * i + j]->set_neighborBottomLeft(IPPixelTree[ny*(i+1)+j-1]);
+            }
+            
+            else{
+                IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
+                IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny * i + j - 1]);
+                IPPixelTree[ny * i + j]->set_neighborTopLeft(IPPixelTree[ny * (i-1)+j-1]);
+                IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny*(i+1)+j]);
+                IPPixelTree[ny * i + j]->set_neighborBottomLeft(IPPixelTree[ny*(i+1)+j-1]);
+                IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
+                IPPixelTree[ny * i + j]->set_neighborTopRight(IPPixelTree[ny * (i-1) + j+1]);
+                IPPixelTree[ny * i + j]->set_neighborBottomRight(IPPixelTree[ny * (i+1)+j+1]);
+            }
+            
+        }
+    }   
 }
 
 void MakeStack(std::vector<ImagePlate*>& ipStack, int camID){
@@ -49,6 +119,7 @@ void MakeStack(std::vector<ImagePlate*>& ipStack, int camID){
             double extX = 5;
             double extY = 5;
             double standOff = 10;
+            int refine = 0;
 
             while(imagePlate_in >> testString){
                 if (testString == "END"){
@@ -82,9 +153,12 @@ void MakeStack(std::vector<ImagePlate*>& ipStack, int camID){
                 if (testString == "IPSTANDOFF"){
                     imagePlate_in >> standOff;
                 }
+                if (testString == "REFINE"){
+                    imagePlate_in >> refine;
+                }
             }
             
-        ImagePlate* ip = new ImagePlate(nx, ny, IPID, beginE, endE, nE, extX, extY, standOff);
+        ImagePlate* ip = new ImagePlate(nx, ny, IPID, beginE, endE, nE, extX, extY, standOff, refine);
         ipStack.push_back(ip);
             }
        }
@@ -111,7 +185,9 @@ int ImagePlate::get_ny(){
     return ny;
 }
 
-
+std::vector<Pixel*> ImagePlate::get_tree(){
+    return IPPixelTree;
+}
 double ImagePlate::get_standOff(){
     return standOff;
 }
