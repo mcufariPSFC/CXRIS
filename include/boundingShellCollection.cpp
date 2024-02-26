@@ -16,6 +16,11 @@ maxRefine(maxRefinei)
     sixthOct = new BoundingShell(inR, outR, maxRefine, 0, M_PI3_4, M_PI3_4);
     seventhOct = new BoundingShell(inR, outR, maxRefine, 0, M_PI3_4, 5.0 * M_PI_4);
     eightOct = new BoundingShell(inR, outR, maxRefine, 0, M_PI3_4, 7.0 * M_PI_4);
+
+    //need to link these somehow...
+    //need to account for bounding plane when innerR  = 0
+    
+
 }
 
 void BoundingShellCollection::print_memberCoords(int levelDes){
@@ -27,4 +32,8 @@ void BoundingShellCollection::print_memberCoords(int levelDes){
     sixthOct->print_memberCoords(levelDes);
     seventhOct->print_memberCoords(levelDes);
     eightOct->print_memberCoords(levelDes);
+}
+
+double BoundingShellCollection::get_outR(){
+    return outR;
 }

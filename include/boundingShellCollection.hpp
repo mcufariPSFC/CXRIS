@@ -8,7 +8,7 @@ public:
     
     BoundingShellCollection(double rin, double rout, int maxRefine);
     void print_memberCoords(int levelDes);
-
+    double get_outR();
 private:
     double inR;
     double outR;

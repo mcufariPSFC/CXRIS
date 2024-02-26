@@ -10,13 +10,13 @@ Grid::Grid(){
     string testString;
 
     nr = 0;
-    ntheta = 1;
-    nphi = 1;
+   
     double fixedEdens = 0;
     double fixedIdens = 0;
     double fixedEtemp = 0;
     double fixedItemp = 0;
-    int refineParam = 1;
+    int refineParam = 0;
+
     while (grid_in >> testString){
 
        if (testString == "GRID"){
@@ -29,12 +29,7 @@ Grid::Grid(){
                 if (testString == "nr"){
                     grid_in >> nr;
                 }
-                if (testString == "nth"){
-                    grid_in >> ntheta;
-                }
-                if (testString == "nphi"){
-                    grid_in >> nphi;
-                }
+                
                 if (testString == "edens"){
                     grid_in >> fixedEdens;
                 }
@@ -76,14 +71,29 @@ Grid::Grid(){
              BoundingShellCollection* newShell = new BoundingShellCollection(maxRadiusCm / nr * i,maxRadiusCm/nr * (i+1),refineParam);
              boundingSphere.push_back(newShell);
         }
-       
-        printCoordsOfCells(refineParam);
+        //TODO: write linking front and back of bounding sphere algorithm
+        for(int i = 0; i < nr; i++){
+            if(i ==  && nr > 1){
+                boundingSphere[i]->set_outerNeighbor(boundingSphere[i+1]);
+            } else if (i == nr-1 && nr > 1){
+                boundingSphere[i]->set_innerNeighbor(boundingSphere[i-1])
+            }
+            else{
+                boundingSphere[i].set_outerNeighbor(boundingSphere[i+1]);
+                boundingSphere[i].set_innerNeighbor(boundingSphere[i-1]);
+            }
+        }
+        //printCoordsOfCells(refineParam);
 
     }
 }
 
 double Grid::get_maxRadius(){
     return maxRadiusCm;
+}
+
+std::vector<BoundingShellCollection*> Grid::get_boundingSphere(){
+    return boundingSphere;
 }
 
 void Grid::printCoordsOfCells(int levelDes){

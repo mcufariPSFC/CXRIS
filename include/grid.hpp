@@ -22,7 +22,7 @@ public:
     int get_nr();
     int get_ntheta();
     int get_nphi() ;*/
-
+    std::vector<BoundingShellCollection*> get_boundingSphere();
     double get_maxRadius();
 
 private:
