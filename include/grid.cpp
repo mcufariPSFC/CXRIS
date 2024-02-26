@@ -79,8 +79,8 @@ Grid::Grid(){
                 boundingSphere[i]->set_innerNeighbor(boundingSphere[i-1])
             }
             else{
-                boundingSphere[i].set_outerNeighbor(boundingSphere[i+1]);
-                boundingSphere[i].set_innerNeighbor(boundingSphere[i-1]);
+                boundingSphere[i]->set_outerNeighbor(boundingSphere[i+1]);
+                boundingSphere[i]->set_innerNeighbor(boundingSphere[i-1]);
             }
         }
         //printCoordsOfCells(refineParam);
