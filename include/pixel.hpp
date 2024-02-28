@@ -22,25 +22,19 @@ public:
     Pixel();
     Pixel(double xLoc, double yLoc, int level, double offsetX, double offsetY, int maxLevel);
     std::vector<Pixel*> refineActive(); //used when hit
-    std::vector<Pixel*> refinePassive(); //used when told by neighbor to refine
-    void setMyChildrensNeighbors();
 
     void add_PSL(Ray* r);
     
-    void set_neighborLeft(Pixel* p);
-    void set_neighborRight(Pixel* p);
-    void set_neighborBottom(Pixel* p);
-    void set_neighborTop(Pixel* p);
-
-    void set_neighborTopLeft(Pixel* p);
-    void set_neighborTopRight(Pixel* p);
-    void set_neighborBottomLeft(Pixel* p);
-    void set_neighborBottomRight(Pixel* p);
 
     Pixel* get_childTopLeft();
     Pixel* get_childTopRight();
     Pixel* get_childBottomRight();
     Pixel* get_childBottomLeft();
+    Pixel* get_childBottom();
+    Pixel* get_childLeft();
+    Pixel* get_childRight();
+    Pixel* get_childTop();
+    
     std::pair<double,double> get_coords();
     int get_refined();
     int get_maxRefined();
@@ -54,15 +48,12 @@ private:
     Pixel* childTopRight;
     Pixel* childBottomLeft;
     Pixel* childBottomRight;
+    Pixel* childTop;
+    Pixel* childBottom;
+    Pixel* childLeft;
+    Pixel* childRight;
 
-    Pixel* neighborLeft;
-    Pixel* neighborRight;
-    Pixel* neighborTop;
-    Pixel* neighborBottom;
-    Pixel* neighborTopLeft;
-    Pixel* neighborTopRight;
-    Pixel* neighborBottomLeft;
-    Pixel* neighborBottomRight;
+
 
 
     std::pair<double,double> coords;
