@@ -106,14 +106,12 @@ void Camera::beginRayTrace(Grid* hydroGrid){
                         
                         if(initTrackCond.second[0] && !activePixel->get_maxRefined()){
                             auto newpixelptrs = activePixel->refineActive();
-                            continueTracking = 0;
                             tree.insert(tree.end(), newpixelptrs.begin(),newpixelptrs.end());
-                            break;  
-                        } else if(initTrackCond.second[0]){
+                        }
+                        if(initTrackCond.second[0]){
                             
                             xray.trackThroughGrid(initTrackCond.first,initTrackCond.second);
                             activePixel->add_PSL(&xray);
-
                         }
                         //Normally track ray through plasma. for now just add the value from launching
                         

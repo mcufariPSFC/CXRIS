@@ -71,7 +71,7 @@ std::pair<BoundingShellCollection*, std::vector<double> > Ray::launchRay(Grid* g
     double usq = dot(unitDirection,unitDirection);
     double osq = dot(coordinateOfLaunch, coordinateOfLaunch);
     BoundingShellCollection* outerMostShell = g->get_boundingSphere().back();
-    double disc = udoto2 - usq * (osq - outerMostShell->get_outR() * outerMostShell->get_outR());
+    double disc = udoto2 - (osq - outerMostShell->get_outR() * outerMostShell->get_outR());
     std::vector<double> coordIntersect = {0, 0.0, 0.0};
     if(disc < 0){
         return std::make_pair(outerMostShell,coordIntersect);
