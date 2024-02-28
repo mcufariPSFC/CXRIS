@@ -1,8 +1,11 @@
 #ifndef RAY_H
 #define RAY_H
 #include <vector>
-#include "grid.hpp"
+
 #include <cmath>
+
+class Grid;
+
 class Ray{
 public:
     Ray();

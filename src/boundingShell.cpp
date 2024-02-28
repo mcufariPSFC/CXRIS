@@ -1,4 +1,5 @@
-#include "../include/BoundingShell.hpp"
+#include "../include/boundingShell.hpp"
+#include "../include/ray.hpp"
 #include <limits>
 #include <cmath>
 #include <iostream>
@@ -11,11 +12,13 @@ outerR(outy),
 centerPhi(cphi),
 centerTheta(ctheta)
 {
+    dtheta = M_PI_2/(pow(2,level));
+    dphi = M_PI_2/(pow(2,level));
+    
     if(innerR < std::numeric_limits< double >::min()){
        
     }
-    dtheta = M_PI_2/(pow(2,level));
-    dphi = M_PI_2/(pow(2,level));
+   
     if(level < maxRefine){
     uthetauphi = new BoundingShell(innerR, outerR, maxRefine, level+1, centerTheta + dtheta/4.0, centerPhi + dphi/4.0);
     uthetalphi = new BoundingShell(innerR, outerR, maxRefine, level+1, centerTheta + dtheta/4.0, centerPhi - dphi/4.0);
@@ -44,28 +47,79 @@ centerTheta(ctheta)
     lthetalphi->set_exitMinusPhi(exitMinusPhi);
     lthetalphi->set_exitMinusTheta(exitMinusTheta);
 
+    double* verts;
+    verts = (double*) malloc(3 * sizeof(double) * 8);
+    
+    verts[0] = innerR * sin(ctheta+dtheta/2.0)*cos(cphi+dphi/2.0);  // inner up right
+    verts[1] = innerR * sin(ctheta+dtheta/2.0) * sin(cphi + dphi/2.0);
+    verts[2] = innerR * cos(ctheta+dtheta/2.0);
+
+    verts[3] = innerR * sin(ctheta+dtheta/2.0)*cos(cphi-dphi/2.0);  // inner up left  
+    verts[4] = innerR * sin(ctheta+dtheta/2.0) * sin(cphi - dphi/2.0);
+    verts[5] = innerR * cos(ctheta+dtheta/2.0);
+
+    verts[6] = innerR * sin(ctheta-dtheta/2.0)*cos(cphi-dphi/2.0);  //inner  down left
+    verts[7] = innerR * sin(ctheta-dtheta/2.0) * sin(cphi - dphi/2.0);
+    verts[8] = innerR * cos(ctheta-dtheta/2.0);
+
+    verts[9] = innerR * sin(ctheta-dtheta/2.0)*cos(cphi+dphi/2.0);  // inner down right 
+    verts[10] = innerR * sin(ctheta-dtheta/2.0) * sin(cphi + dphi/2.0);
+    verts[11] = innerR * cos(ctheta-dtheta/2.0);
+
+    verts[12] = outerR * sin(ctheta+dtheta/2.0)*cos(cphi+dphi/2.0);  // outerR up right
+    verts[13] = outerR * sin(ctheta+dtheta/2.0) * sin(cphi + dphi/2.0);
+    verts[14] = outerR * cos(ctheta+dtheta/2.0);
+
+    verts[15] = outerR * sin(ctheta+dtheta/2.0)*cos(cphi-dphi/2.0);  // outerR up left  
+    verts[16] = outerR * sin(ctheta+dtheta/2.0) * sin(cphi - dphi/2.0);
+    verts[17] = outerR * cos(ctheta+dtheta/2.0);
+
+    verts[18] = outerR * sin(ctheta-dtheta/2.0)*cos(cphi-dphi/2.0);  //outerR  down left
+    verts[19] = outerR * sin(ctheta-dtheta/2.0) * sin(cphi - dphi/2.0);
+    verts[20] = outerR * cos(ctheta-dtheta/2.0);
+
+    verts[21] = outerR * sin(ctheta-dtheta/2.0)*cos(cphi+dphi/2.0);  // outerR down right 
+    verts[22] = outerR * sin(ctheta-dtheta/2.0) * sin(cphi + dphi/2.0);
+    verts[23] = outerR * cos(ctheta-dtheta/2.0);
     }
 
 
-    
-
-   
-
-
-    plusPhi = new BoundPlane();
-    minusPhi = new BoundPlane();
-    plusTheta = new BoundPlane();
-    minusTheta = new BoundPlane();
-    
-   
+       
 }
 
 void BoundingShell::set_exitInterior(BoundingShell* bs){
     exitInterior = bs;
+    if(uthetauphi){
+        uthetauphi->set_exitInterior(bs);
+    }
+    if(uthetalphi){
+        uthetalphi->set_exitInterior(bs);
+    }
+    if(lthetauphi){
+        lthetauphi->set_exitInterior(bs);
+    }    
+    if(lthetalphi){  
+        lthetalphi->set_exitInterior(bs);
+    }
 }
 void BoundingShell::set_exitExterior(BoundingShell* bs){
     exitInterior = bs;
+    if(uthetauphi){
+        uthetauphi->set_exitExterior(bs);
+    }
+    if(uthetalphi){
+        uthetalphi->set_exitExterior(bs);
+    }
+    if(lthetauphi){
+        lthetauphi->set_exitExterior(bs);
+    }    
+    if(lthetalphi){  
+        lthetalphi->set_exitExterior(bs);
+    }
 }
+
+
+
 void BoundingShell::set_exitPlusTheta(BoundingShell* bs){
     exitPlusTheta = bs;
 }
@@ -133,4 +187,8 @@ void BoundingShell::print_memberCoords(int levelDes){
         std::cout << outerR * cos(centerTheta-dtheta/2.0) << std::endl;
 
     }
+}
+
+void BoundingShell::propagateHit(Ray r, double* intersectionPt){
+    std::cout << "Ouch!" << std::endl;
 }

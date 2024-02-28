@@ -5,7 +5,7 @@
 #include <cmath>
 using namespace std;
 Grid::Grid(){
-    ifstream grid_in("/Users/matt/Library/Mobile Documents/com~apple~CloudDocs/Documents/research/CXRIS/inputs/grid_input.txt");
+    ifstream grid_in("../inputs/grid_input.txt");
     
     string testString;
 
@@ -72,11 +72,11 @@ Grid::Grid(){
              boundingSphere.push_back(newShell);
         }
         //TODO: write linking front and back of bounding sphere algorithm
-        for(int i = 0; i < nr; i++){
-            if(i == 0 && nr > 1){
+        for(int i = 0; i < nr && nr > 1; i++){
+            if(i == 0 ){
                 boundingSphere[i]->set_outerNeighbor(boundingSphere[i+1]);
-            } else if (i == nr-1 && nr > 1){
-                boundingSphere[i]->set_innerNeighbor(boundingSphere[i-1])
+            } else if (i == nr-1){
+                boundingSphere[i]->set_innerNeighbor(boundingSphere[i-1]);
             }
             else{
                 boundingSphere[i]->set_outerNeighbor(boundingSphere[i+1]);

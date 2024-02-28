@@ -58,6 +58,7 @@ std::vector<Pixel*> Pixel::refinePassive(){
     if(level==maxLevel || refined){
         return newPixelsAndCoords;
     }
+
     refined = 1;
     childTopLeft = new Pixel(coords.first - childOffsetX, coords.second + childOffsetY, level + 1, childOffsetX/4.0, childOffsetY/4.0, maxLevel);
     childTopRight = new Pixel(coords.first + childOffsetX, coords.second + childOffsetY, level+1, childOffsetX/4.0, childOffsetY/4.0, maxLevel);
@@ -68,13 +69,18 @@ std::vector<Pixel*> Pixel::refinePassive(){
     newPixelsAndCoords.push_back(childTopLeft);
     newPixelsAndCoords.push_back(childTopRight);
     newPixelsAndCoords.push_back(childBottomRight);
+    setMyChildrensNeighbors();
+
     return newPixelsAndCoords;
 }
 void Pixel::setMyChildrensNeighbors(){
-
+    
+   
     childTopLeft->set_neighborRight(childTopRight);
     childTopLeft->set_neighborBottom(childBottomLeft);
     childTopLeft->set_neighborBottomRight(childBottomRight);
+    
+    
 
     childTopRight->set_neighborLeft(childTopLeft);
     childTopRight->set_neighborBottom(childBottomRight);
@@ -88,7 +94,6 @@ void Pixel::setMyChildrensNeighbors(){
     childBottomLeft->set_neighborRight(childBottomRight);
     childBottomLeft->set_neighborTopRight(childTopRight);
 
-    
     if(neighborLeft){
         childTopLeft->set_neighborLeft(neighborLeft->get_childTopRight());
         childTopLeft->set_neighborBottomLeft(neighborLeft->get_childBottomRight());
@@ -123,6 +128,7 @@ void Pixel::setMyChildrensNeighbors(){
         childBottomRight->set_neighborTopRight(neighborRight->get_childTopLeft());
 
     }
+
     if(neighborBottomRight){
         childBottomRight->set_neighborBottomRight(neighborBottomRight->get_childTopLeft());
     }
@@ -145,13 +151,11 @@ std::vector<Pixel*> Pixel::refineActive(){
     if (level == maxLevel || refined){
         return newPixelsAndCoords;
     }
-
     refined = 1;
     childTopLeft = new Pixel(coords.first - childOffsetX, coords.second + childOffsetY, level + 1, childOffsetX/4.0, childOffsetY/4.0, maxLevel);
     childTopRight = new Pixel(coords.first + childOffsetX, coords.second + childOffsetY, level+1, childOffsetX/4.0, childOffsetY/4.0, maxLevel);
     childBottomRight = new Pixel(coords.first + childOffsetX, coords.second - childOffsetY, level+1, childOffsetX/4.0, childOffsetY/4.0, maxLevel);
     childBottomLeft = new Pixel(coords.first - childOffsetX, coords.second - childOffsetY, level+ 1, childOffsetX/4.0, childOffsetY/4.0, maxLevel);
-
     if(neighborLeft){
         auto newPixelsAndCoordsNeighbor = neighborLeft->refinePassive();
         newPixelsAndCoords.insert(newPixelsAndCoords.end(),newPixelsAndCoordsNeighbor.begin(),newPixelsAndCoordsNeighbor.end());
@@ -159,39 +163,42 @@ std::vector<Pixel*> Pixel::refineActive(){
     if(neighborRight){
         auto newPixelsAndCoordsNeighbor = neighborRight->refinePassive();
         newPixelsAndCoords.insert(newPixelsAndCoords.end(),newPixelsAndCoordsNeighbor.begin(),newPixelsAndCoordsNeighbor.end());
-
     }
     if(neighborTop){
         auto newPixelsAndCoordsNeighbor = neighborTop->refinePassive();
         newPixelsAndCoords.insert(newPixelsAndCoords.end(),newPixelsAndCoordsNeighbor.begin(),newPixelsAndCoordsNeighbor.end());
     }
+       
     if(neighborBottom){
         auto newPixelsAndCoordsNeighbor = neighborBottom->refinePassive();
         newPixelsAndCoords.insert(newPixelsAndCoords.end(),newPixelsAndCoordsNeighbor.begin(),newPixelsAndCoordsNeighbor.end());
     }
+
     if(neighborTopLeft){
         auto newPixelsAndCoordsNeighbor = neighborTopLeft->refinePassive();
         newPixelsAndCoords.insert(newPixelsAndCoords.end(),newPixelsAndCoordsNeighbor.begin(),newPixelsAndCoordsNeighbor.end());
     }
+
     if(neighborTopRight){
         auto newPixelsAndCoordsNeighbor = neighborTopRight->refinePassive();
         newPixelsAndCoords.insert(newPixelsAndCoords.end(),newPixelsAndCoordsNeighbor.begin(),newPixelsAndCoordsNeighbor.end());
     }
+
     if(neighborBottomLeft){
         auto newPixelsAndCoordsNeighbor = neighborBottomLeft->refinePassive();
         newPixelsAndCoords.insert(newPixelsAndCoords.end(),newPixelsAndCoordsNeighbor.begin(),newPixelsAndCoordsNeighbor.end());
     }
+
     if(neighborBottomRight){
        auto newPixelsAndCoordsNeighbor = neighborBottomRight->refinePassive();
        newPixelsAndCoords.insert(newPixelsAndCoords.end(),newPixelsAndCoordsNeighbor.begin(),newPixelsAndCoordsNeighbor.end());
     }
-
     /*set neighbords for the top left child node of the active refine pixel*/
     setMyChildrensNeighbors();
 
    /* set the neighbors for the newly passively refined pixels*/
-
-    if(neighborTopLeft){
+    /*if(neighborTopLeft){
+        std::cout << "ntlo" << std::endl;
         neighborTopLeft->setMyChildrensNeighbors();
     }
     if(neighborTop){
@@ -214,8 +221,7 @@ std::vector<Pixel*> Pixel::refineActive(){
     }
     if(neighborLeft){
         neighborLeft->setMyChildrensNeighbors();
-    }
-
+    }*/
     newPixelsAndCoords.push_back(childBottomLeft);
     newPixelsAndCoords.push_back(childTopLeft);
     newPixelsAndCoords.push_back(childTopRight);

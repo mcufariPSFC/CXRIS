@@ -2,7 +2,9 @@
 
 BoundPlane::BoundPlane(double* verts):
 verts(verts)
-{}
+{
+
+}
 BoundPlane::BoundPlane(){
     
 }

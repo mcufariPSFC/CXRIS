@@ -35,14 +35,12 @@ refine(refinei)
                 if(j == 0){
                     IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny * (i + 1) + j]);
                     IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
-                    IPPixelTree[ny * i + j]->set_neighborBottomRight(IPPixelTree[ny * (i + 1) + j +1]);
-                }
-                if(j == ny - 1){
+                    IPPixelTree[ny * i + j]->set_neighborBottomRight(IPPixelTree[ny * (i + 1) + j + 1]);
+                } else if(j == ny - 1){
                     IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny*i + j - 1]);
-                    IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[2 * ny - 1]);
-                    IPPixelTree[ny * i + j]->set_neighborBottomLeft(IPPixelTree[2*ny - 2]);
-                }
-                else{
+                    IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny * (i+1) - 1]);
+                    IPPixelTree[ny * i + j]->set_neighborBottomLeft(IPPixelTree[ny * (i+1) - 2]);
+                } else{
                     IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny*(i+1)+j]);
                     IPPixelTree[ny * i + j]->set_neighborBottomLeft(IPPixelTree[ny*(i+1)+j-1]);
                     IPPixelTree[ny * i + j]->set_neighborBottomRight(IPPixelTree[ny * (i+1)+j+1]);
@@ -54,36 +52,30 @@ refine(refinei)
                     IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i-1)+j]);
                     IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
                     IPPixelTree[ny * i + j]->set_neighborTopRight(IPPixelTree[ny * (i-1) + j+1]);
-                }
-                if(j == ny - 1){
+                } else if(j == ny - 1){
                     IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
                     IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny * i + j - 1]);
                     IPPixelTree[ny * i + j]->set_neighborTopLeft(IPPixelTree[ny * (i-1)+j-1]);
-                }
-                else{
+                } else{
                     IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
                     IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny * i + j - 1]);
                     IPPixelTree[ny * i + j]->set_neighborTopLeft(IPPixelTree[ny * (i-1)+j-1]);
                     IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
                     IPPixelTree[ny * i + j]->set_neighborTopRight(IPPixelTree[ny * (i-1) + j+1]);
                 }
-            } 
-            if(j == 0 && (i != 0 && i!= nx-1)){
+            } else if(j == 0 && (i != 0 && i != nx - 1)){
                 IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
                 IPPixelTree[ny * i + j]->set_neighborRight(IPPixelTree[ny * i + j + 1]);
                 IPPixelTree[ny * i + j]->set_neighborTopRight(IPPixelTree[ny * (i-1) + j+1]);
                 IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny*(i+1)+j]);
                 IPPixelTree[ny * i + j]->set_neighborBottomRight(IPPixelTree[ny * (i+1)+j+1]);
-            }
-            if(j == ny - 1 && (i != 0 && i != nx - 1)){
+            } else if(j == ny - 1 && (i !=0 && i!= nx -1 )){
                 IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
                 IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny * i + j - 1]);
                 IPPixelTree[ny * i + j]->set_neighborTopLeft(IPPixelTree[ny * (i-1)+j-1]);
                 IPPixelTree[ny * i + j]->set_neighborBottom(IPPixelTree[ny*(i+1)+j]);
                 IPPixelTree[ny * i + j]->set_neighborBottomLeft(IPPixelTree[ny*(i+1)+j-1]);
-            }
-            
-            else{
+            } else{
                 IPPixelTree[ny * i + j]->set_neighborTop(IPPixelTree[ny * (i - 1) + j]);
                 IPPixelTree[ny * i + j]->set_neighborLeft(IPPixelTree[ny * i + j - 1]);
                 IPPixelTree[ny * i + j]->set_neighborTopLeft(IPPixelTree[ny * (i-1)+j-1]);
@@ -99,14 +91,15 @@ refine(refinei)
 }
 
 void MakeStack(std::vector<ImagePlate*>& ipStack, int camID){
-    ifstream imagePlate_in("/Users/matt/Library/Mobile Documents/com~apple~CloudDocs/Documents/research/CXRIS/inputs/imagePlate_input.txt");
+    ifstream imagePlate_in("../inputs/imagePlate_input.txt");
     
     string testString;
     int testCID;
-
+    
     while (imagePlate_in >> testString){
-
+       
        if (testString == "IMAGEPLATE"){
+       
         imagePlate_in >> testCID; 
         if(testCID == camID){
         

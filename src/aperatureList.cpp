@@ -11,7 +11,7 @@ AperatureList::AperatureList(){
 }
 
 void AperatureList::create(int CamID){
-    ifstream aperature_in("/Users/matt/Library/Mobile Documents/com~apple~CloudDocs/Documents/research/CXRIS/inputs/aperatures_input.txt");
+    ifstream aperature_in("../inputs/aperatures_input.txt");
     
     string testString;
     nAps = 0;

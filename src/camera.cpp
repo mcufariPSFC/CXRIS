@@ -6,7 +6,7 @@
 
 using namespace std;
 Camera::Camera(){
-    ifstream camera_in("/Users/matt/Library/Mobile Documents/com~apple~CloudDocs/Documents/research/CXRIS/inputs/camera_input.txt");
+    ifstream camera_in("../inputs/camera_input.txt");
     
     string testString;
     
@@ -83,7 +83,6 @@ void Camera::beginRayTrace(Grid* hydroGrid){
         auto nE = IP->get_nE();
         std::vector<Pixel*> tree = IP->get_tree();
         while(tree.size()){
-
             Pixel* activePixel = tree.back();
             tree.pop_back();
             auto IPcoord = activePixel->get_coords();
@@ -104,10 +103,9 @@ void Camera::beginRayTrace(Grid* hydroGrid){
                         xray.updateRayDir(IPcoord, IPstandOff, apGridCoord, apGridStandOff, xBasisVectorInImagePlane, yBasisVectorInImagePlane, camUnitVec);
                         xray.updateRaySpec(nE);
                         std::pair<double*, int> initTrackCond = xray.launchRay(hydroGrid, beginE, endE, nE);
+                        
                         if(initTrackCond.second && !activePixel->get_maxRefined()){
-                            
                             auto newpixelptrs = activePixel->refineActive();
-                            
                             continueTracking = 0;
                             tree.insert(tree.end(), newpixelptrs.begin(),newpixelptrs.end());
                             break;  

@@ -2,6 +2,7 @@
 #define BOUNDINGSHELL_H
 
 #include "boundPlane.hpp"
+#include "ray.hpp"
 class BoundingShell{
 public:
 
@@ -9,13 +10,16 @@ public:
     BoundingShell* findLowestChildIntersection(double* intersect);
 
     void print_memberCoords(int levelDes);
-
+    
+   
     void set_exitInterior(BoundingShell* bs);
     void set_exitExterior(BoundingShell* bs);
     void set_exitPlusTheta(BoundingShell* bs);
     void set_exitMinusTheta(BoundingShell* bs);
     void set_exitMinusPhi(BoundingShell* bs);
     void set_exitPlusPhi(BoundingShell* bs);
+
+    void propagateHit(Ray r, double* intPt);
 
 private:
     
@@ -42,10 +46,6 @@ private:
     BoundingShell* exitPlusPhi;
     BoundingShell* exitMinusPhi;
 
-    BoundPlane* plusPhi;
-    BoundPlane* minusPhi;
-    BoundPlane* plusTheta;
-    BoundPlane* minusTheta;
 
     
 };

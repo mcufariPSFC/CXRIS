@@ -1,5 +1,7 @@
 #include "../include/ray.hpp"
+#include "../include/grid.hpp"
 #include <iostream>
+
 Ray::Ray(){
     unitDirection[0] = 0.0;
     unitDirection[1] = 0.0;
@@ -62,12 +64,14 @@ std::pair<double*, int> Ray::launchRay(Grid* g, double beginE, double endE, int 
     double udoto2 = udoto*udoto;
     double usq = dot(unitDirection,unitDirection);
     double osq = dot(coordinateOfLaunch, coordinateOfLaunch);
-    double disc = udoto2 - usq * (osq - g->get_boundingSphere().back()->get_outR() * g->get_boundingSphere().back()->get_outR());
-    double coordIntersect[3] = {0.0,0.0,0.0};
+    BoundingShellCollection* outerMostShell = g->get_boundingSphere().back();
+    double disc = udoto2 - usq * (osq - outerMostShell->get_outR() * outerMostShell->get_outR());
+    double coordIntersect[3] = {1.0,1.0,1.0};
     if(disc < 0){
         return std::make_pair(coordIntersect,0);
     }
     else{
+        outerMostShell->propagateHit(*this, coordIntersect);
         return std::make_pair(coordIntersect,1);
     }
     

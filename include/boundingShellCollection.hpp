@@ -9,6 +9,21 @@ public:
     BoundingShellCollection(double rin, double rout, int maxRefine);
     void print_memberCoords(int levelDes);
     double get_outR();
+    
+    void set_innerNeighbor(BoundingShellCollection* bsc);
+    void set_outerNeighbor(BoundingShellCollection* bsc);
+
+    BoundingShell* get_firstOct();
+    BoundingShell* get_secondOct();
+    BoundingShell* get_thirdOct();
+    BoundingShell* get_fourthOct();
+    BoundingShell* get_fifthOct();
+    BoundingShell* get_sixthOct();
+    BoundingShell* get_seventhOct();
+    BoundingShell* get_eighthOct();
+
+    void propagateHit(Ray r, double* intersectionPt);
+
 private:
     double inR;
     double outR;
@@ -21,7 +36,7 @@ private:
     BoundingShell* fifthOct;
     BoundingShell* sixthOct;
     BoundingShell* seventhOct;
-    BoundingShell* eightOct;
+    BoundingShell* eighthOct;
 };
 
 #endif

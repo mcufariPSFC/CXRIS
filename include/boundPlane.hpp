@@ -9,6 +9,7 @@ public:
     BoundPlane();
     
     bool isPointInSide(double* pt);
+
 private:
     
     double* verts;
