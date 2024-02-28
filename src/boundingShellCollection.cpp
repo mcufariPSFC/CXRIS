@@ -126,31 +126,36 @@ double BoundingShellCollection::get_outR(){
     return outR;
 }
 
-void BoundingShellCollection::propagateHit(Ray r, double* intersectionPt){
-    if(intersectionPt[0] > 0 && intersectionPt[1] > 0 && intersectionPt[2] > 0 && firstOct){
+
+
+void BoundingShellCollection::propagateHit(Ray* r, std::vector<double> intersectionPt){
+    
+    
+    if(intersectionPt[0] > 0 && intersectionPt[1] >= 0 && intersectionPt[2] >= 0 && firstOct){
         firstOct->propagateHit(r, intersectionPt);
     }
-    if(intersectionPt[0] > 0 && intersectionPt[1] < 0 && intersectionPt[2] > 0 && secondOct){
+    else if(intersectionPt[0] > 0 && intersectionPt[1] <= 0 && intersectionPt[2] >= 0 && secondOct){
         secondOct->propagateHit(r, intersectionPt);
     }
-    if(intersectionPt[0] < 0 && intersectionPt[1] < 0 && intersectionPt[2] > 0 && thirdOct){
+    else if(intersectionPt[0] < 0 && intersectionPt[1] <= 0 && intersectionPt[2] >= 0 && thirdOct){
         thirdOct->propagateHit(r, intersectionPt);
     }
-    if(intersectionPt[0] > 0 && intersectionPt[1] < 0 && intersectionPt[2] > 0 && fourthOct){
+    else if(intersectionPt[0] > 0 && intersectionPt[1] <= 0 && intersectionPt[2] >= 0 && fourthOct){
         fourthOct->propagateHit(r, intersectionPt);
     }
 
 
-    if(intersectionPt[0] > 0 && intersectionPt[1] > 0 && intersectionPt[2] < 0 && fifthOct){
+    else if(intersectionPt[0] >= 0 && intersectionPt[1] > 0 && intersectionPt[2] < 0 && fifthOct){
         fifthOct->propagateHit(r, intersectionPt);
     }
-    if(intersectionPt[0] > 0 && intersectionPt[1] < 0 && intersectionPt[2] < 0 && sixthOct){
+    else if(intersectionPt[0] >= 0 && intersectionPt[1] < 0 && intersectionPt[2] < 0 && sixthOct){
         sixthOct->propagateHit(r, intersectionPt);
     }
-    if(intersectionPt[0] < 0 && intersectionPt[1] < 0 && intersectionPt[2] < 0 && seventhOct){
+    else if(intersectionPt[0] <= 0 && intersectionPt[1] < 0 && intersectionPt[2] < 0 && seventhOct){
         seventhOct->propagateHit(r, intersectionPt);
     }
-    if(intersectionPt[0] > 0 && intersectionPt[1] < 0 && intersectionPt[2] < 0 && eighthOct){
+    else if(intersectionPt[0] >= 0 && intersectionPt[1] < 0 && intersectionPt[2] < 0 && eighthOct){
         eighthOct->propagateHit(r, intersectionPt);
     }
+    
 }

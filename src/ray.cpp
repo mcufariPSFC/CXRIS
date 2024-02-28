@@ -59,24 +59,36 @@ void Ray::updateRaySpec(int nE){
     energySpectrum = temp;
 }
 
-std::pair<double*, int> Ray::launchRay(Grid* g, double beginE, double endE, int nE){
+void Ray::addPayload(double p){
+    if(energySpectrum.size()){
+        energySpectrum[0]++;
+    }
+
+}
+std::pair<BoundingShellCollection*, std::vector<double> > Ray::launchRay(Grid* g, double beginE, double endE, int nE){
     double udoto = dot(unitDirection,coordinateOfLaunch);
     double udoto2 = udoto*udoto;
     double usq = dot(unitDirection,unitDirection);
     double osq = dot(coordinateOfLaunch, coordinateOfLaunch);
     BoundingShellCollection* outerMostShell = g->get_boundingSphere().back();
     double disc = udoto2 - usq * (osq - outerMostShell->get_outR() * outerMostShell->get_outR());
-    double coordIntersect[3] = {1.0,1.0,1.0};
+    std::vector<double> coordIntersect = {0, 0.0, 0.0};
     if(disc < 0){
-        return std::make_pair(coordIntersect,0);
+        return std::make_pair(outerMostShell,coordIntersect);
     }
     else{
-        outerMostShell->propagateHit(*this, coordIntersect);
-        return std::make_pair(coordIntersect,1);
+        coordIntersect[0] = outerMostShell->get_outR();
+        return std::make_pair(outerMostShell,coordIntersect);
     }
     
 }
 
+void Ray::trackThroughGrid(BoundingShellCollection* shell, std::vector<double> coordIntersect){
+     shell->propagateHit(this, coordIntersect);
+}
+double* Ray::get_direction(){
+    return unitDirection;
+}
 double Ray::get_spectrum(){
     return energySpectrum[0];
 }

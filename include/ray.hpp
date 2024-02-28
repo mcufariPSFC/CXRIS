@@ -1,9 +1,9 @@
 #ifndef RAY_H
 #define RAY_H
 #include <vector>
-
 #include <cmath>
 
+class BoundingShellCollection;
 class Grid;
 
 class Ray{
@@ -13,11 +13,16 @@ public:
 
     void updateRaySpec(int nE);
     
-    std::pair<double*, int> launchRay(Grid* G, double beginE, double endE, int nE); //compute energy spectrum along ray given the grid G
+    std::pair<BoundingShellCollection*, std::vector<double> > launchRay(Grid* G, double beginE, double endE, int nE); //compute energy spectrum along ray given the grid G
 
     double get_spectrum();
 
+    double* get_direction();
+
+    void addPayload(double d);
     
+    void trackThroughGrid(BoundingShellCollection* shell, std::vector<double> coordInt);
+
 private:
     std::vector<double> energySpectrum;
     double unitDirection[3];

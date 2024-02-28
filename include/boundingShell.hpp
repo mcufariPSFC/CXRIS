@@ -19,7 +19,10 @@ public:
     void set_exitMinusPhi(BoundingShell* bs);
     void set_exitPlusPhi(BoundingShell* bs);
 
-    void propagateHit(Ray r, double* intPt);
+    void propagateHit(Ray* r, std::vector<double> intPt);
+
+    double* testInnerShellIntersection(double* origin, double* dir);
+    double* testOuterShellIntersection(double* origin, double* dir);
 
 private:
     
@@ -46,6 +49,10 @@ private:
     BoundingShell* exitPlusPhi;
     BoundingShell* exitMinusPhi;
 
+    BoundPlane* plusPhiPlane;
+    BoundPlane* minusPhiPlane;
+    BoundPlane* plusThetaPlane;
+    BoundPlane* minusThetaPlane;
 
     
 };

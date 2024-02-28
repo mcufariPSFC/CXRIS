@@ -81,6 +81,13 @@ centerTheta(ctheta)
     verts[21] = outerR * sin(ctheta-dtheta/2.0)*cos(cphi+dphi/2.0);  // outerR down right 
     verts[22] = outerR * sin(ctheta-dtheta/2.0) * sin(cphi + dphi/2.0);
     verts[23] = outerR * cos(ctheta-dtheta/2.0);
+
+    /* Creating plane structures bounding this volume*/
+    plusPhiPlane = new BoundPlane(&verts[0], &verts[12],&verts[21],&verts[9]);
+    minusPhiPlane = new BoundPlane(&verts[3],&verts[15],&verts[18],&verts[6]);
+    plusThetaPlane = new BoundPlane(&verts[6],&verts[9],&verts[21],&verts[18]);
+    minusThetaPlane = new BoundPlane(&verts[0],&verts[12],&verts[15],&verts[3]);
+
     }
 
 
@@ -189,6 +196,97 @@ void BoundingShell::print_memberCoords(int levelDes){
     }
 }
 
-void BoundingShell::propagateHit(Ray r, double* intersectionPt){
-    std::cout << "Ouch!" << std::endl;
+double sgn(double val) {
+    return (0.0 < val) - (val < 0.0);
+}
+
+std::vector<double> ArrayToVector(double* arr, size_t arr_len) {
+    return std::vector<double>(arr, arr + arr_len);
+}
+
+void BoundingShell::propagateHit(Ray* r, std::vector<double> intersectionPt){
+    if(uthetauphi){
+        double rad = sqrt(intersectionPt[0]*intersectionPt[0] + intersectionPt[1]*intersectionPt[1]+intersectionPt[2]*intersectionPt[2]);
+        double theta = acos(intersectionPt[2]/rad);
+        double phi = sgn(intersectionPt[1])*acos(intersectionPt[0]/sqrt(intersectionPt[0]*intersectionPt[0]+intersectionPt[1]*intersectionPt[1]));
+        double thetaDif = theta - centerTheta;
+        double phiDif = phi - centerPhi ;
+        if(phiDif > 0){
+            if(thetaDif > 0){
+                uthetauphi->propagateHit(r, intersectionPt);
+            }
+            else{
+                lthetauphi->propagateHit(r, intersectionPt);
+            }
+        }
+        else{
+            if(thetaDif > 0){
+                uthetalphi->propagateHit(r, intersectionPt);
+            }
+            else{
+                lthetalphi->propagateHit(r,intersectionPt);
+            }
+        }
+        
+    } else {
+
+        r->addPayload(1.0);
+        double* dir  = r->get_direction();
+        double* movedRay;
+        movedRay = (double*) malloc(3 * sizeof(double));
+
+        movedRay[0] = dir[0]*1e-6 + intersectionPt[0];
+        movedRay[1] = dir[1]*1e-6 + intersectionPt[1];
+        movedRay[2] = dir[2]*1e-6 + intersectionPt[2];
+
+        //compute intersection table for each group of vertices
+        if(double* intPt = testInnerShellIntersection(movedRay, dir)){
+            if(exitInterior){
+                exitInterior->propagateHit(r, ArrayToVector(intPt,3));
+            } else {
+                std::cout << "Error! Inner intersection with nonexistent shell" << std::endl;
+                std::cout << "Shell R in: " << innerR << "\t shell R out: " << outerR <<  std::endl;
+                exit(1); 
+            }
+        }
+        if(double* intPt = plusPhiPlane->testIntersection(movedRay, dir)){
+            if(exitPlusPhi){
+                exitPlusPhi->propagateHit(r, ArrayToVector(intPt,3));
+            } else {
+                std::cout << "Error!";
+            }
+        } else if(double* intPt = minusPhiPlane->testIntersection(movedRay, dir)){
+            if(exitMinusPhi){
+                exitMinusPhi->propagateHit(r, ArrayToVector(intPt,3));
+            } else{
+                return;
+            }
+        } else if (double* intPt = plusThetaPlane->testIntersection(movedRay, dir)){
+            if(exitPlusTheta){
+                exitPlusTheta->propagateHit(r,ArrayToVector(intPt,3));
+            }
+        } else if(double* intPt = minusThetaPlane->testIntersection(movedRay, dir)){
+            if(exitMinusTheta){
+                exitMinusTheta->propagateHit(r, ArrayToVector(intPt,3));
+            }
+        } else if (double* intPt = testOuterShellIntersection(movedRay, dir)) {
+            if(exitExterior){
+                exitExterior->propagateHit(r, ArrayToVector(intPt,3));
+            } else {
+                return;
+            }
+        } else {
+            //std::cout << "No intersections!!" << "\t exiting" << std::endl;
+            //exit(1);
+        }
+    
+    }
+
+}
+
+double* BoundingShell::testInnerShellIntersection(double* origin, double* dir){
+    return 0;
+}
+double* BoundingShell::testOuterShellIntersection(double* origin, double* dir){
+    return 0;
 }

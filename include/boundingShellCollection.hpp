@@ -22,7 +22,7 @@ public:
     BoundingShell* get_seventhOct();
     BoundingShell* get_eighthOct();
 
-    void propagateHit(Ray r, double* intersectionPt);
+    void propagateHit(Ray* r, std::vector<double> intersectionPt);
 
 private:
     double inR;

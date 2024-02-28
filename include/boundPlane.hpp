@@ -5,14 +5,19 @@
 class BoundPlane{
 public:
     
-    BoundPlane(double* verts);
-    BoundPlane();
+    BoundPlane(double* vert1, double* vert2, double* vert3, double* vert4);
     
-    bool isPointInSide(double* pt);
+    //double* cross(double* a, double* b);
 
+    bool isPointInSide(double* pt);
+    double* testIntersection(double* origin, double* dir);
+    
 private:
     
-    double* verts;
+    double* vert1;
+    double* vert2;
+    double* vert3;
+    double* vert4;
 
 }; 
 

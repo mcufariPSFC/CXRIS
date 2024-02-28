@@ -22,15 +22,15 @@ zoffset(zoffset)
    double rad = 0.0;
    double drad = radius / nx;
    std::vector<std::pair<double,double> > grid;
-    for (int j = 0; j < ny; j++){
-        for (int i = 0; i < nx; i++){
+    for (int i = 0; i < nx; i++){
+        for (int j = 0; j < ny; j++){
             std::pair<double,double> coords((double) xoffset + rad * sin(theta),yoffset + rad * cos(theta));
             grid.push_back(coords);
             //drad = -1.0 * rad + sqrt(rad*rad + radius*radius / (double) (nx));
-            rad += drad;
+            theta += dtheta;
         }
-        rad = 0.0;
-        theta += dtheta;
+        theta = 0;
+        rad += drad;
     }
     aperatureGridCenters = grid;
 

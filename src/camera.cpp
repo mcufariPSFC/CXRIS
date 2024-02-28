@@ -102,16 +102,21 @@ void Camera::beginRayTrace(Grid* hydroGrid){
                         auto apGridStandOff = apGrid.get_zoffset();
                         xray.updateRayDir(IPcoord, IPstandOff, apGridCoord, apGridStandOff, xBasisVectorInImagePlane, yBasisVectorInImagePlane, camUnitVec);
                         xray.updateRaySpec(nE);
-                        std::pair<double*, int> initTrackCond = xray.launchRay(hydroGrid, beginE, endE, nE);
+                        std::pair<BoundingShellCollection*, std::vector<double> > initTrackCond = xray.launchRay(hydroGrid, beginE, endE, nE);
                         
-                        if(initTrackCond.second && !activePixel->get_maxRefined()){
+                        if(initTrackCond.second[0] && !activePixel->get_maxRefined()){
                             auto newpixelptrs = activePixel->refineActive();
                             continueTracking = 0;
                             tree.insert(tree.end(), newpixelptrs.begin(),newpixelptrs.end());
                             break;  
+                        } else if(initTrackCond.second[0]){
+                            
+                            xray.trackThroughGrid(initTrackCond.first,initTrackCond.second);
+                            activePixel->add_PSL(&xray);
+
                         }
                         //Normally track ray through plasma. for now just add the value from launching
-                        activePixel->add_PSL((double) initTrackCond.second);
+                        
                     }
                 }
             }

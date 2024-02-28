@@ -255,8 +255,8 @@ void Pixel::print_pixel(){
     }
 }
 
-void Pixel::add_PSL(double pslIncr){
-    PSL += pslIncr;
+void Pixel::add_PSL(Ray* r){
+    PSL += r->get_spectrum();
 }
 
 int Pixel::get_refined(){

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include "ray.hpp"
 /*
 Pixel is an oct-tree structure that begins coarse to enable faster renders where rays do not intersect the grid
 
@@ -24,7 +25,7 @@ public:
     std::vector<Pixel*> refinePassive(); //used when told by neighbor to refine
     void setMyChildrensNeighbors();
 
-    void add_PSL(double PSL);
+    void add_PSL(Ray* r);
     
     void set_neighborLeft(Pixel* p);
     void set_neighborRight(Pixel* p);

@@ -5,6 +5,5 @@ itemp 1
 etemp 1
 idens 1
 edens 1
-maxR 11
-
+maxR 0.2
 END
