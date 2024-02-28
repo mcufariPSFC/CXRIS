@@ -1,4 +1,4 @@
-#include "ray.hpp"
+#include "../include/ray.hpp"
 #include <iostream>
 Ray::Ray(){
     unitDirection[0] = 0.0;

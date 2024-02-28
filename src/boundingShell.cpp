@@ -1,4 +1,4 @@
-#include "BoundingShell.hpp"
+#include "../include/BoundingShell.hpp"
 #include <limits>
 #include <cmath>
 #include <iostream>

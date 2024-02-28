@@ -1,4 +1,4 @@
-#include "aperatureGrid.hpp"
+#include "../include/aperatureGrid.hpp"
 #include <fstream>
 #include <iostream>
 using namespace std;

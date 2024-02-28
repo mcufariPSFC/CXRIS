@@ -1,4 +1,4 @@
-#include "camera.hpp"
+#include "../include/camera.hpp"
 #include <fstream>
 #include <string>
 #include <utility>

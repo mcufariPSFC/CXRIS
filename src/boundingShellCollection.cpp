@@ -1,4 +1,4 @@
-#include "boundingShellCollection.hpp"
+#include "../include/boundingShellCollection.hpp"
 #include <cmath>
 double M_PI3_4 = 3.0 * M_PI_4;
 BoundingShellCollection::BoundingShellCollection(double rin, double rout, int maxRefinei):

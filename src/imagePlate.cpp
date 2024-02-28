@@ -1,4 +1,4 @@
-#include "imagePlate.hpp"
+#include "../include/imagePlate.hpp"
 #include <fstream>
 #include <string>
 #include <utility>

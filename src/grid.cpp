@@ -1,4 +1,4 @@
-#include "grid.hpp"
+#include "../include/grid.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -73,7 +73,7 @@ Grid::Grid(){
         }
         //TODO: write linking front and back of bounding sphere algorithm
         for(int i = 0; i < nr; i++){
-            if(i ==  && nr > 1){
+            if(i == 0 && nr > 1){
                 boundingSphere[i]->set_outerNeighbor(boundingSphere[i+1]);
             } else if (i == nr-1 && nr > 1){
                 boundingSphere[i]->set_innerNeighbor(boundingSphere[i-1])

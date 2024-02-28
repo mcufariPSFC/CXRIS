@@ -1,4 +1,4 @@
-#include "boundPlane.hpp"
+#include "../include/boundPlane.hpp"
 
 BoundPlane::BoundPlane(double* verts):
 verts(verts)

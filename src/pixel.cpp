@@ -1,4 +1,4 @@
-#include "pixel.hpp"
+#include "../include/pixel.hpp"
 #include <vector>
 #include <utility>
 

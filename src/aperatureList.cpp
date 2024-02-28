@@ -1,5 +1,5 @@
-#include "aperatureList.hpp"
-#include "aperatureGrid.hpp"
+#include "../include/aperatureList.hpp"
+#include "../include/aperatureGrid.hpp"
 #include <string>
 #include <fstream>
 #include <iostream>
