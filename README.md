@@ -27,10 +27,12 @@ E.g. while in the CXRIS directory
 Modify the lines in the CMakeLists.txt file to specify the locaiton of the gcc compilers on your system.
 Create a directory for the built executable to live in
 `mkdir build`
+
 `cd build`
 
 from inside the build directory
 `cmake ..`
+
 `make`
 
 Then to run cxris
