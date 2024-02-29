@@ -47,14 +47,14 @@ std::vector<Pixel*> Pixel::refineActive(){
         return newPixelsAndCoords;
     }
     
-    childTopLeft = new Pixel(coords.first - childOffsetX, coords.second + childOffsetY, level + 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
-    childTopRight = new Pixel(coords.first + childOffsetX, coords.second + childOffsetY, level+1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
-    childBottomRight = new Pixel(coords.first + childOffsetX, coords.second - childOffsetY, level+1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
-    childBottomLeft = new Pixel(coords.first - childOffsetX, coords.second - childOffsetY, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
-    childTop = new Pixel(coords.first , coords.second + childOffsetY, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
-    childBottom = new Pixel(coords.first , coords.second - childOffsetY, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
-    childLeft = new Pixel(coords.first - childOffsetX, coords.second, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
-    childRight = new Pixel(coords.first + childOffsetX, coords.second, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
+    childTopLeft = new Pixel(coords.first - 1.5 * childOffsetX, coords.second + 1.5 * childOffsetY, level + 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
+    childTopRight = new Pixel(coords.first + 1.5 * childOffsetX, coords.second + 1.5 * childOffsetY, level+1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
+    childBottomRight = new Pixel(coords.first + 1.5 * childOffsetX, coords.second - 1.5 * childOffsetY, level+1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
+    childBottomLeft = new Pixel(coords.first - 1.5 * childOffsetX, coords.second - 1.5 * childOffsetY, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
+    childTop = new Pixel(coords.first , coords.second + 1.5 * childOffsetY, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
+    childBottom = new Pixel(coords.first , coords.second - 1.5 * childOffsetY, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
+    childLeft = new Pixel(coords.first - 1.5 * childOffsetX, coords.second, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
+    childRight = new Pixel(coords.first + 1.5 *  childOffsetX, coords.second, level+ 1, childOffsetX/2.0, childOffsetY/2.0, maxLevel);
     
     childOffsetX = childOffsetX/2.0;
     childOffsetY = childOffsetY/2.0;

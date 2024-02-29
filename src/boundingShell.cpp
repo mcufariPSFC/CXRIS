@@ -246,7 +246,7 @@ void BoundingShell::propagateHit(Ray* r, std::vector<double> intersectionPt){
             } else {
                 std::cout << "Error! Inner intersection with nonexistent shell" << std::endl;
                 std::cout << "Shell R in: " << innerR << "\t shell R out: " << outerR <<  std::endl;
-                exit(1); 
+                 exit(1);
             }
         }
         if(double* intPt = plusPhiPlane->testIntersection(movedRay, dir)){
@@ -279,7 +279,7 @@ void BoundingShell::propagateHit(Ray* r, std::vector<double> intersectionPt){
             //std::cout << "No intersections!!" << "\t exiting" << std::endl;
             //exit(1);
         }
-    
+        free(movedRay);
     }
 
 }

@@ -1,7 +1,7 @@
 #include "../include/ray.hpp"
 #include "../include/grid.hpp"
 #include <iostream>
-
+#include <cstdlib>
 Ray::Ray(){
     unitDirection[0] = 0.0;
     unitDirection[1] = 0.0;
@@ -17,10 +17,10 @@ Ray::Ray(){
 
 void Ray::updateRayDir(std::pair<double,double> IPPixelCoords, double IPStand, std::pair<double,double> apGridCoords, double apGridStand, double* xBasis, double* yBasis, double* zbasis){
     double IPCenter[3];
+
     IPCenter[0] = zbasis[0] * IPStand;
     IPCenter[1] = zbasis[1] * IPStand;
     IPCenter[2] = zbasis[2] * IPStand;
-
     double apCenter[3];
     apCenter[0] = zbasis[0] * apGridStand;
     apCenter[1] = zbasis[1] * apGridStand;
@@ -36,7 +36,7 @@ void Ray::updateRayDir(std::pair<double,double> IPPixelCoords, double IPStand, s
     rayTarget[0] = apCenter[0] + xBasis[0] * apGridCoords.first + yBasis[0] * apGridCoords.second;
     rayTarget[1] = apCenter[1] + xBasis[1] * apGridCoords.first + yBasis[1] * apGridCoords.second;
     rayTarget[2] = apCenter[2] + xBasis[2] * apGridCoords.first + yBasis[2] * apGridCoords.second;
-
+    
     double rayDir[3];
 
     rayDir[0] = rayTarget[0]-rayBase[0];
